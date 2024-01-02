@@ -17,11 +17,21 @@ function updateOver(run) {
   } else {
     scoreSheet = JSON.parse(score);
   }
-  updateScore(run, scoreSheet);
+  updateOvers(run, scoreSheet);
+}
+function updateOvers(run, score) {
+  if (score.over.length - score.extras > 5) {
+    score.over = [];
+    score.extras = 0;
+  } else {
+    score.overs.pop();
+  }
+  score.over.push(run);
+  score.overs.push(score.over);
+  updateScore(run, score);
 }
 
 function updateScore(run, score) {
-  console.log(run, score);
   if (typeof run === "number") {
     score.target += run;
   } else if (run === "W") {
@@ -30,8 +40,9 @@ function updateScore(run, score) {
     score.extras += 1;
     score.target += 1;
   }
-  score.over.push(run);
   localStorage.setItem("scoreCard", JSON.stringify(score));
 }
 
-function addExtras() {}
+function addExtraRun(extraRun) {
+  
+}
