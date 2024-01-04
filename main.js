@@ -1,15 +1,49 @@
 const showRuns = document.querySelector(".showRuns");
 const showOvers = document.querySelector(".showOvers");
+const sec2 = document.querySelector(".sec2");
 
 function showScore() {
   const score = JSON.parse(localStorage.getItem("scoreCard"));
-  showRuns.innerHTML = score.score + " / " + score.wickets;
 
-  if (score.over.length < 6) {
-    showOvers.innerHTML =
-      score.overs.length - 1 + "." + score.over.length + " Overs";
+  console.log(score);
+  if (score === null) {
+    showRuns.innerHTML = "0 / 0";
+    showOvers.innerHTML = "0.0 Overs";
+    sec2.innerHTML = "";
   } else {
-    showOvers.innerHTML = score.overs.length + "." + "0 Overs";
+    const data = score.overs
+      .map((e, index) => {
+        return `<div class="overs"><div class="overTag">Over ${
+          index + 1
+        }</div> <div class="over">${e
+          .map((e) => {
+            if (e[0] == "W" || e[2] == "W") {
+              return `<span class="ball wkt">${e}</span>`;
+            } else if (e == 6 || e[0] == "6") {
+              return `<span class="ball six">${e}</span>`;
+            } else if (e == 4 || e[0] == "4") {
+              return `<span class="ball four">${e}</span>`;
+            } else {
+              return `<span class="ball">${e}</span>`;
+            }
+          })
+          .join(" ")}</div></div>`;
+      })
+      .join(" ");
+    showRuns.innerHTML = score.score + " / " + score.wickets;
+
+    if (score.over.length - score.extras < 6) {
+      showOvers.innerHTML =
+        score.overs.length -
+        1 +
+        "." +
+        (score.over.length - score.extras) +
+        " Overs";
+    } else {
+      showOvers.innerHTML = score.overs.length + "." + "0 Overs";
+    }
+
+    sec2.innerHTML = data;
   }
 }
 showScore();
