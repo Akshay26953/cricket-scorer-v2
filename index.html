@@ -3,43 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Cricket Scorer</title>
   </head>
   <body>
-    <!-- <form action="" onsubmit="submitIp()" >
-      <input type="radio" name="inning" id="inn1" value="inn1" required /><label for="inn1"
-        >1st Innging</label
-      >
-      <input type="radio" name="inning" id="inn2" value="inn2" required /><label for="inn2"
-        >2nd Innging</label
-      >
-      <input type="submit" value="Submit" />
-    </form> -->
-    <!-- <button onclick="submitIp()">Submit</button> -->
-    <section id="runBtns">
-      <input type="button" class="btn" value="0" onclick="addRun(0)" />
-      <input type="button" class="btn" value="1" onclick="addRun(1)" />
-      <input type="button" class="btn" value="2" onclick="addRun(2)" />
-      <input type="button" class="btn" value="3" onclick="addRun(3)" />
-      <input type="button" class="btn" value="4" onclick="addRun(4)" />
-      <input type="button" class="btn" value="5" onclick="addRun(5)" />
-      <input type="button" class="btn" value="6" onclick="addRun(6)" />
-      <input type="button" class="btn" value="W" onclick="addRun('W')" />
-      <input type="button" class="btn" value="wd" onclick="addRun('wd')" />
-      <input type="button" class="btn" value="nb" onclick="addRun('nb')" />
+    <section class="sec1">
+      <div class="score">
+        <h1 class="showRuns">0 / 0</h1>
+        <p class="showOvers">0.0 Overs</p>
+      </div>
+      <section id="runBtns">
+        <input type="button" class="btn" value="0" onclick="addRun(0)" />
+        <input type="button" class="btn" value="1" onclick="addRun(1)" />
+        <input type="button" class="btn" value="2" onclick="addRun(2)" />
+        <input type="button" class="btn" value="3" onclick="addRun(3)" />
+        <input type="button" class="btn" value="4" onclick="addRun(4)" />
+        <input type="button" class="btn" value="5" onclick="addRun(5)" />
+        <input type="button" class="btn" value="6" onclick="addRun(6)" />
+        <input type="button" class="btn" value="W" onclick="addRun('W')" />
+        <input type="button" class="btn" value="wd" onclick="addRun('wd')" />
+        <input type="button" class="btn" value="nb" onclick="addRun('nb')" />
+        <input
+          type="button"
+          class="btn"
+          value="Reset Last"
+          onclick="resetLast()"
+        />
+        <input
+          type="button"
+          class="btn"
+          value="Reset All"
+          onclick="resetAll()"
+        />
+      </section>
+      <p>Extra Runs</p>
+      <section id="extraRunBtns">
+        <input type="button" class="btn" value="0" onclick="addExtraRun(0)" />
+        <input type="button" class="btn" value="1" onclick="addExtraRun(1)" />
+        <input type="button" class="btn" value="2" onclick="addExtraRun(2)" />
+        <input type="button" class="btn" value="3" onclick="addExtraRun(3)" />
+        <input type="button" class="btn" value="4" onclick="addExtraRun(4)" />
+        <input type="button" class="btn" value="5" onclick="addExtraRun(5)" />
+        <input type="button" class="btn" value="6" onclick="addExtraRun(6)" />
+        <!-- W btn active only for nb and wd not for W. Build logic for it -->
+        <!-- <input type="button" class="btn" value="W" onclick="addRun('W')" /> -->
+      </section>
     </section>
-    <p>Extra Runs</p>
-    <section id="extraRunBtns">
-      <input type="button" class="btn" value="0" onclick="addExtraRun(0)" />
-      <input type="button" class="btn" value="1" onclick="addExtraRun(1)" />
-      <input type="button" class="btn" value="2" onclick="addExtraRun(2)" />
-      <input type="button" class="btn" value="3" onclick="addExtraRun(3)" />
-      <input type="button" class="btn" value="4" onclick="addExtraRun(4)" />
-      <input type="button" class="btn" value="5" onclick="addExtraRun(5)" />
-      <input type="button" class="btn" value="6" onclick="addExtraRun(6)" />
-      <!-- W btn active only for nb and wd not for W. Build logic for it -->
-      <!-- <input type="button" class="btn" value="W" onclick="addRun('W')" /> -->
-    </section>
+    <section class="sec2"></section>
     <script src="main.js"></script>
   </body>
 </html>
