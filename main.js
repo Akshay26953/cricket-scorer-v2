@@ -1,16 +1,61 @@
 const showRuns = document.querySelector(".showRuns");
 const showOvers = document.querySelector(".showOvers");
+const showTarget = document.querySelector(".showTarget");
 const sec2 = document.querySelector(".sec2");
+const form = document.querySelector("form");
+const targetOpt = document.querySelector(".targetOpt");
+const dialog = document.getElementById("dialog");
+let overs = document.getElementById("overs");
+let target = document.getElementById("target");
+
+function showDialog() {
+  const matchStatus = localStorage.getItem("matchSetup");
+  if (matchStatus === null) {
+    dialog.style.display = "block";
+  } else {
+    dialog.style.display = "none";
+  }
+  showScore()
+}
+showDialog();
+
+function setTarget() {
+  let inn = document.querySelector('input[name="inn"]:checked').value;
+
+  if (inn === "true") {
+    targetOpt.style.display = "block";
+  } else {
+    targetOpt.style.display = "none";
+  }
+}
+
+function subSetup() {
+  let inn = document.querySelector('input[name="inn"]:checked').value;
+
+  const matchSetup = {
+    overs: Number(overs.value),
+    target: Number(target.value),
+    inn: inn,
+  };
+
+  localStorage.setItem("matchSetup", JSON.stringify(matchSetup));
+  showDialog();
+}
+
+
 
 function showScore() {
+  const matchStatus = JSON.parse(localStorage.getItem("matchSetup"));
   const score = JSON.parse(localStorage.getItem("scoreCard"));
-
-  console.log(score);
   if (score === null) {
     showRuns.innerHTML = "0 / 0";
-    showOvers.innerHTML = "0.0 Overs";
+    showOvers.innerHTML = "0.0(" + `${matchStatus.overs}` + ") Overs";
+    // showOvers.innerHTML = "0.0(0) Overs";
     sec2.innerHTML = "";
   } else {
+    const ballsBowled =
+      (score.overs.length - 1) * 6 + score.over.length - score.extras;
+    const totalBalls = matchStatus.overs * 6;
     const data = score.overs
       .map((e, index) => {
         return `<div class="overs"><div class="overTag">Over ${
@@ -30,17 +75,34 @@ function showScore() {
           .join(" ")}</div></div>`;
       })
       .join(" ");
-    showRuns.innerHTML = score.score + " / " + score.wickets;
-
+    showRuns.innerHTML =
+      score.score +
+      " / " +
+      score.wickets +
+      `${" ( Target: " + matchStatus.target + " )"}`;
+    // +`${matchStatus.inn == "true" ? `${"Target: " + matchStatus.target}` : ""}`;
+    // {matchStatus.inn === 'false'}
     if (score.over.length - score.extras < 6) {
       showOvers.innerHTML =
         score.overs.length -
         1 +
         "." +
         (score.over.length - score.extras) +
-        " Overs";
+        "(" +
+        matchStatus.overs +
+        ") Overs";
     } else {
       showOvers.innerHTML = score.overs.length + "." + "0 Overs";
+    }
+
+    if (matchStatus.inn === "true") {
+      showTarget.style.display = "block";
+      showTarget.innerHTML =
+        matchStatus.target -
+        score.score +
+        " runs required from " +
+        (totalBalls - ballsBowled) +
+        " balls";
     }
 
     sec2.innerHTML = data;
@@ -111,30 +173,32 @@ function addExtraRun(extraRun) {
 }
 
 function resetLast() {
-  const score = JSON.parse(localStorage.getItem("scoreCard"));
-  console.log(score.over.length);
-  if (score.over.length !== 0) {
-    const lastScore = score.over.pop();
-    if (typeof lastScore === "number") {
-      score.score -= lastScore;
-    } else {
-      if (lastScore[0] === "W" || lastScore[2] === "W") {
-        score.wickets -= 1;
-        if (lastScore[2] === "W") {
-          score.score -= Number(lastScore[0]);
-        }
+  const last = confirm("Do you want to delete score on last ball?");
+  if (last) {
+    const score = JSON.parse(localStorage.getItem("scoreCard"));
+    if (score.over.length !== 0) {
+      const lastScore = score.over.pop();
+      if (typeof lastScore === "number") {
+        score.score -= lastScore;
       } else {
-        score.extras -= 1;
-        if (lastScore[2] === "w" || lastScore[2] === "n") {
-          score.score -= Number(lastScore[0]) + 1;
+        if (lastScore[0] === "W" || lastScore[2] === "W") {
+          score.wickets -= 1;
+          if (lastScore[2] === "W") {
+            score.score -= Number(lastScore[0]);
+          }
+        } else {
+          score.extras -= 1;
+          if (lastScore[2] === "w" || lastScore[2] === "n") {
+            score.score -= Number(lastScore[0]) + 1;
+          }
         }
       }
+      score.overs.pop();
+      score.overs.push(score.over);
+      localStorage.setItem("scoreCard", JSON.stringify(score));
     }
-    score.overs.pop();
-    score.overs.push(score.over);
-    localStorage.setItem("scoreCard", JSON.stringify(score));
+    showScore();
   }
-  showScore();
 }
 
 function resetAll() {
