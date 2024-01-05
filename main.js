@@ -8,6 +8,62 @@ const dialog = document.getElementById("dialog");
 let overs = document.getElementById("overs");
 let target = document.getElementById("target");
 
+const getData = () => {
+  const matchStatus = JSON.parse(localStorage.getItem("matchSetup"));
+  const score = JSON.parse(localStorage.getItem("scoreCard"));
+  // if (score !== null) {
+  //   const ballsBowled =
+  //     (score.overs.length - 1) * 6 + score.over.length - score.extras;
+  //   const totalBalls = matchStatus.overs * 6;
+  //   return { matchStatus, score, ballsBowled, totalBalls };
+  // } else {
+  // }
+  return {
+    matchStatus,
+    score,
+    ballsBowled:
+      score !== null
+        ? (score.overs.length - 1) * 6 + score.over.length - score.extras
+        : 0,
+    totalBalls: score !== null ? matchStatus.overs * 6 : 0,
+  };
+};
+
+function checkMatchStatus() {
+  const { matchStatus, score, ballsBowled, totalBalls } = getData();
+  // console.log(matchStatus, score, ballsBowled, totalBalls);
+  if (matchStatus !== null && score !== null) {
+    if (matchStatus.inn === "false") {
+      // code for first batting
+      if (ballsBowled >= totalBalls) {
+        matchStatus.inn = "true";
+        matchStatus.target = score.score + 1;
+        localStorage.setItem("teamAscore", JSON.stringify(score));
+        localStorage.removeItem("scoreCard");
+        localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
+      }
+    } else {
+      if (matchStatus.target < score.score) {
+        console.log("Team B won");
+      } else if (
+        matchStatus.target < score.score &&
+        totalBalls === ballsBowled
+      ) {
+        console.log("Team B won");
+      } else if (
+        matchStatus.target - 1 > score.score &&
+        totalBalls === ballsBowled
+      ) {
+        console.log("Team A Won");
+      } else if (
+        matchStatus.target - 1 === score.score &&
+        totalBalls === ballsBowled
+      ) {
+        console.log("Match Tied");
+      }
+    }
+  }
+}
 function showDialog() {
   const matchStatus = localStorage.getItem("matchSetup");
   if (matchStatus === null) {
@@ -15,7 +71,7 @@ function showDialog() {
   } else {
     dialog.style.display = "none";
   }
-  showScore()
+  showScore();
 }
 showDialog();
 
@@ -42,15 +98,14 @@ function subSetup() {
   showDialog();
 }
 
-
-
 function showScore() {
-  const matchStatus = JSON.parse(localStorage.getItem("matchSetup"));
-  const score = JSON.parse(localStorage.getItem("scoreCard"));
+  checkMatchStatus();
+
+  const { matchStatus, score } = getData();
   if (score === null) {
     showRuns.innerHTML = "0 / 0";
-    showOvers.innerHTML = "0.0(" + `${matchStatus.overs}` + ") Overs";
-    // showOvers.innerHTML = "0.0(0) Overs";
+    showOvers.innerHTML =
+      "0.0(" + `${matchStatus ? matchStatus.overs : 0}` + ") Overs";
     sec2.innerHTML = "";
   } else {
     const ballsBowled =
@@ -79,9 +134,12 @@ function showScore() {
       score.score +
       " / " +
       score.wickets +
-      `${" ( Target: " + matchStatus.target + " )"}`;
-    // +`${matchStatus.inn == "true" ? `${"Target: " + matchStatus.target}` : ""}`;
-    // {matchStatus.inn === 'false'}
+      `${
+        matchStatus.inn === "true"
+          ? "( Target: " + matchStatus.target + " )"
+          : ""
+      }`;
+
     if (score.over.length - score.extras < 6) {
       showOvers.innerHTML =
         score.overs.length -
