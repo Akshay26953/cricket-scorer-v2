@@ -3,27 +3,98 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+
     <title>Cricket Scorer</title>
   </head>
   <body>
-    <header></header>
-    <section id="btns">
-      <input type="button" class="btn" value="0" onclick="addrun(0)" />
-      <input type="button" class="btn" value="1" onclick="addrun(1)" />
-      <input type="button" class="btn" value="2" onclick="addrun(2)" />
-      <input type="button" class="btn" value="3" onclick="addrun(3)" />
-      <input type="button" class="btn" value="4" onclick="addrun(4)" />
-      <input type="button" class="btn" value="5" onclick="addrun(5)" />
-      <input type="button" class="btn" value="6" onclick="addrun(6)" />
-      <input type="button" class="btn" value="W" onclick="addrun('W')" />
-      <input type="button" class="btn" value="wd" onclick="addrun('wd')" />
-      <input type="button" class="btn" value="nb" onclick="addrun('nb')" />
+    <section id="dialog">
+      <form>
+        <div class="oversOpt">
+          <label for="overs">Set Overs : </label>
+          <input type="number" min="1" name="overs" id="overs" value="1" />
+        </div>
+        <div class="chooseOpt">
+          <label for="inn">Choose : </label>
+          <input
+            type="radio"
+            name="inn"
+            id="inn1"
+            value="false"
+            checked
+            onchange="setTarget()"
+          />
+          <label for="inn1">Full Match</label>
+          <input
+            type="radio"
+            name="inn"
+            id="inn2"
+            value="true"
+            onchange="setTarget()"
+          />
+          <label for="inn2">Only 2nd Inning</label>
+        </div>
+        <div class="targetOpt">
+          <label for="overs">Set Target : </label>
+          <input
+            type="number"
+            min="0"
+            name="target"
+            id="target"
+            placeholder="0"
+          />
+        </div>
+        <button type="button" class="dialogBtn" onclick="subSetup()">
+          Submit
+        </button>
+        <!-- <input type="submit" value="Submit" /> -->
+      </form>
     </section>
-
-    <script>
-      function addrun(run) {
-        console.log(run);
-      }
-    </script>
+    <section class="sec1">
+      <div class="score">
+        <p class="showTarget">56 runs required from 40 balls</p>
+        <h1 class="showRuns">0 / 0</h1>
+        <p class="showOvers">0.0(0) Overs</p>
+      </div>
+      <section id="runBtns">
+        <input type="button" class="btn" value="0" onclick="addRun(0)" />
+        <input type="button" class="btn" value="1" onclick="addRun(1)" />
+        <input type="button" class="btn" value="2" onclick="addRun(2)" />
+        <input type="button" class="btn" value="3" onclick="addRun(3)" />
+        <input type="button" class="btn" value="4" onclick="addRun(4)" />
+        <input type="button" class="btn" value="5" onclick="addRun(5)" />
+        <input type="button" class="btn" value="6" onclick="addRun(6)" />
+        <input type="button" class="btn" value="W" onclick="addRun('W')" />
+        <input type="button" class="btn" value="wd" onclick="addRun('wd')" />
+        <input type="button" class="btn" value="nb" onclick="addRun('nb')" />
+        <input
+          type="button"
+          class="btn"
+          value="Reset Last"
+          onclick="resetLast()"
+        />
+        <input
+          type="button"
+          class="btn"
+          value="Reset All"
+          onclick="resetAll()"
+        />
+      </section>
+      <p>Extra Runs</p>
+      <section id="extraRunBtns">
+        <input type="button" class="btn" value="0" onclick="addExtraRun(0)" />
+        <input type="button" class="btn" value="1" onclick="addExtraRun(1)" />
+        <input type="button" class="btn" value="2" onclick="addExtraRun(2)" />
+        <input type="button" class="btn" value="3" onclick="addExtraRun(3)" />
+        <input type="button" class="btn" value="4" onclick="addExtraRun(4)" />
+        <input type="button" class="btn" value="5" onclick="addExtraRun(5)" />
+        <input type="button" class="btn" value="6" onclick="addExtraRun(6)" />
+        <!-- W btn active only for nb and wd not for W. Build logic for it -->
+        <!-- <input type="button" class="btn" value="W" onclick="addRun('W')" /> -->
+      </section>
+    </section>
+    <section class="sec2"></section>
+    <script src="main.js"></script>
+    <script src="inning.js"></script>
   </body>
 </html>
