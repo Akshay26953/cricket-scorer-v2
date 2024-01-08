@@ -47,54 +47,225 @@
         <button type="button" class="dialogBtn" onclick="subSetup()">
           Submit
         </button>
-        <!-- <input type="submit" value="Submit" /> -->
       </form>
     </section>
-    <section class="sec1">
-      <div class="score">
-        <p class="showTarget">56 runs required from 40 balls</p>
-        <h1 class="showRuns">0 / 0</h1>
-        <p class="showOvers">0.0(0) Overs</p>
-      </div>
-      <section id="runBtns">
-        <input type="button" class="btn" value="0" onclick="addRun(0)" />
-        <input type="button" class="btn" value="1" onclick="addRun(1)" />
-        <input type="button" class="btn" value="2" onclick="addRun(2)" />
-        <input type="button" class="btn" value="3" onclick="addRun(3)" />
-        <input type="button" class="btn" value="4" onclick="addRun(4)" />
-        <input type="button" class="btn" value="5" onclick="addRun(5)" />
-        <input type="button" class="btn" value="6" onclick="addRun(6)" />
-        <input type="button" class="btn" value="W" onclick="addRun('W')" />
-        <input type="button" class="btn" value="wd" onclick="addRun('wd')" />
-        <input type="button" class="btn" value="nb" onclick="addRun('nb')" />
-        <input
-          type="button"
-          class="btn"
-          value="Reset Last"
-          onclick="resetLast()"
-        />
-        <input
-          type="button"
-          class="btn"
-          value="Reset All"
-          onclick="resetAll()"
-        />
+    <header>
+      <h1>Cricket Scorer</h1>
+    </header>
+    <main>
+      <section class="sec1">
+        <p class="showTarget">
+          <span>56</span> runs required from <span>40</span> balls
+        </p>
+        <div class="score">
+          <h1 class="showRuns">
+            <span>Team A :</span> <span>0 / 0 (0.0/0)</span>
+          </h1>
+          <!-- <h1 class="showRuns">Team A : 0 / 0 (0.0/0)</h1> -->
+          <p class="info">
+            <span class="infocrr">CRR: 4.5</span>
+            <span class="infotar">Target: 45</span>
+            <span class="inforrr">RRR: 4.5</span>
+          </p>
+          <div class="currentOver">
+            <span>Current Over: </span>
+            <span class="coBalls">
+              <div class="ball">1</div>
+              <div class="ball">2</div>
+              <div class="ball">4</div>
+              <div class="ball">W</div>
+              <div class="ball">6+nb</div>
+              <div class="ball">5nb</div>
+              <div class="ball">5nb</div>
+            </span>
+          </div>
+        </div>
+        <section id="runBtns">
+          <div class="runBtnSet">
+            <input type="button" class="btn" value="0" onclick="addRun(0)" />
+            <input type="button" class="btn" value="1" onclick="addRun(1)" />
+            <input type="button" class="btn" value="2" onclick="addRun(2)" />
+            <input type="button" class="btn" value="3" onclick="addRun(3)" />
+            <input type="button" class="btn" value="4" onclick="addRun(4)" />
+            <input type="button" class="btn" value="5" onclick="addRun(5)" />
+            <input type="button" class="btn" value="6" onclick="addRun(6)" />
+            <input type="button" class="btn" value="W" onclick="addRun('W')" />
+            <input
+              type="button"
+              class="btn"
+              value="wd"
+              onclick="addRun('wd')"
+            />
+            <input
+              type="button"
+              class="btn"
+              value="nb"
+              onclick="addRun('nb')"
+            />
+          </div>
+          <div class="extraRunBtn">
+            <p class="extraTitle">Extra Runs</p>
+            <div class="extraRunBtnSet">
+              <input
+                type="button"
+                class="btn"
+                value="0"
+                onclick="addExtraRun(0)"
+              />
+              <input
+                type="button"
+                class="btn"
+                value="1"
+                onclick="addExtraRun(1)"
+              />
+              <input
+                type="button"
+                class="btn"
+                value="2"
+                onclick="addExtraRun(2)"
+              />
+              <input
+                type="button"
+                class="btn"
+                value="3"
+                onclick="addExtraRun(3)"
+              />
+              <input
+                type="button"
+                class="btn"
+                value="4"
+                onclick="addExtraRun(4)"
+              />
+              <input
+                type="button"
+                class="btn"
+                value="5"
+                onclick="addExtraRun(5)"
+              />
+              <input
+                type="button"
+                class="btn"
+                value="6"
+                onclick="addExtraRun(6)"
+              />
+              <!-- W btn active only for nb and wd not for W. Build logic for it -->
+              <input
+                type="button"
+                class="btn"
+                value="W"
+                onclick="addRun('W')"
+              />
+            </div>
+          </div>
+          <div class="btnSet">
+            <input
+              type="button"
+              class="btn"
+              value="Reset Last"
+              onclick="resetLast()"
+            />
+            <input
+              type="button"
+              class="btn endInn"
+              value="End Inning"
+              onclick="resetAll()"
+            />
+            <input
+              type="button"
+              class="btn endMat"
+              value="End Match"
+              onclick="resetAll()"
+            />
+          </div>
+        </section>
       </section>
-      <p>Extra Runs</p>
-      <section id="extraRunBtns">
-        <input type="button" class="btn" value="0" onclick="addExtraRun(0)" />
-        <input type="button" class="btn" value="1" onclick="addExtraRun(1)" />
-        <input type="button" class="btn" value="2" onclick="addExtraRun(2)" />
-        <input type="button" class="btn" value="3" onclick="addExtraRun(3)" />
-        <input type="button" class="btn" value="4" onclick="addExtraRun(4)" />
-        <input type="button" class="btn" value="5" onclick="addExtraRun(5)" />
-        <input type="button" class="btn" value="6" onclick="addExtraRun(6)" />
-        <!-- W btn active only for nb and wd not for W. Build logic for it -->
-        <!-- <input type="button" class="btn" value="W" onclick="addRun('W')" /> -->
+      <section class="sec2">
+        <div id="currentInn" class="overSet">
+          <h2 class="oversTitle">Current Over</h2>
+          <div class="allOvers">
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div id="1stInn" class="overSet">
+          <h2 class="oversTitle">1st Inning</h2>
+          <div class="allOvers">
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+            <div class="overs">
+              <p class="overTag">Over 1</p>
+              <div class="over">
+                <span class="ball">1</span><span class="ball">W</span
+                ><span class="ball">nb</span>
+              </div>
+            </div>
+          </div>
+        </div> -->
       </section>
-    </section>
-    <section class="sec2"></section>
-    <script src="main.js"></script>
-    <script src="inning.js"></script>
+    </main>
+    <footer>
+      <p>Created By <a href="/">Akshay Kharat</a></p>
+    </footer>
+    <!-- <script src="main.js"></script> -->
+    <!-- <script src="inning.js"></script> -->
   </body>
 </html>
