@@ -184,7 +184,7 @@
               type="button"
               class="btn endInn"
               value="End Inning"
-              onclick="resetAll()"
+              onclick="endInning()"
             />
             <input
               type="button"
@@ -197,7 +197,7 @@
       </section>
       <section class="sec2">
         <div id="currentInn" class="overSet">
-          <h2 class="oversTitle">Current Over</h2>
+          <h2 class="oversTitle">Current Inning</h2>
           <div id="currentOvers" class="allOvers"></div>
         </div>
         <!-- <div id="1stInn" class="overSet">
@@ -205,17 +205,20 @@
       </section>
     </main>
 
-    <!-- <section  id="endFirstInn" class="dialog1">
+    <section id="endFirstInn" class="dialog1">
       <p>End of First Inning</p>
-      <button onclick="startNewInning()">Start New Inning</button>
-    </section> -->
+      <div>
+        <button onclick="startNewInning()">Start New Inning</button>
+        <button onclick="seeScore()">See Score</button>
+      </div>
+    </section>
     <!-- <section class="matchResult dialog1">
       <p>Match Won</p>
       <button onclick="startNewGame()">Start New Game</button>
     </section> -->
 
     <footer>
-      <p>Created By <a href="/">Akshay Kharat</a></p>
+      <p>Created By <a href="https://github.com/Akshay26953/">Akshay Kharat</a></p>
     </footer>
     <script src="index.js"></script>
   </body>

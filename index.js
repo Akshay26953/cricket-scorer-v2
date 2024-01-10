@@ -5,6 +5,7 @@ const srRuns = document.querySelector(".srRuns");
 const srOvers = document.querySelector(".srOvers");
 const stBalls = document.querySelector(".stBalls");
 const stRuns = document.querySelector(".stRuns");
+const infocrr = document.querySelector(".infocrr");
 const infotar = document.querySelector(".infotar");
 const inforrr = document.querySelector(".inforrr");
 const currentOvers = document.getElementById("currentOvers");
@@ -31,7 +32,7 @@ const getData = () => {
       score !== null
         ? (score.overs.length - 1) * 6 + score.over.length - score.extras
         : 0,
-    totalBalls: score !== null ? matchStatus.overs * 6 : 0,
+    totalBalls: matchStatus ? matchStatus.overs * 6 : 0,
   };
 };
 
@@ -103,14 +104,27 @@ function showScore() {
   checkMatchStatus();
 
   const { matchStatus, score, ballsBowled, totalBalls } = getData();
+
   if (score === null) {
     if (matchStatus !== null) {
       srTeam.innerHTML = `${
         matchStatus.inn === "true" ? "Team B :" : "Team A :"
       }`;
       srOvers.innerHTML = "(0.0/" + matchStatus.overs + ")";
+      showTarget.style.display = "block";
+      stRuns.innerHTML = matchStatus.target;
+      stBalls.innerHTML = totalBalls;
+      if (matchStatus.inn === "true") {
+        infotar.style.display = "block";
+        inforrr.style.display = "block";
+        infotar.innerHTML = "Target: " + matchStatus.target;
+        inforrr.innerHTML = "RRR: " + matchStatus.target / matchStatus.overs;
+      }
     }
   } else {
+    const crr = score.score / (ballsBowled / 6);
+    const rrr =
+      (matchStatus.target - score.score) / ((totalBalls - ballsBowled) / 6);
     const showAllOvers = score.overs
       .map((e, index) => {
         return `<div class="overs"><div class="overTag">Over ${
@@ -131,6 +145,7 @@ function showScore() {
       })
       .join(" ");
     currentOvers.innerHTML = showAllOvers;
+    infocrr.innerHTML = "CRR: " + crr.toFixed(2);
 
     if (matchStatus.inn === "true") {
       showTarget.style.display = "block";
@@ -139,6 +154,7 @@ function showScore() {
       infotar.style.display = "block";
       inforrr.style.display = "block";
       infotar.innerHTML = "Target: " + matchStatus.target;
+      inforrr.innerHTML = "RRR: " + rrr.toFixed(2);
     }
 
     srTeam.innerHTML = `${
@@ -288,6 +304,23 @@ function resetAll() {
   showScore();
 }
 
+function endInning() {
+  const {matchStatus, score, ballsBowled, totalBalls} = getData();
+  if (ballsBowled < totalBalls) {
+    const endInn = confirm(
+      "Do you want to declare inning before completing all overs?"
+    );
+    if (endInn) {
+      matchStatus.inn = "true";
+      matchStatus.target = score.score + 1;
+      localStorage.setItem("teamAscore", JSON.stringify(score));
+      localStorage.removeItem("scoreCard");
+      localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
+      endFirstInn.style.display = "block";
+    }
+  }
+}
+
 function startNewGame() {
   matchResult.style.display = "none";
   if (reset) {
@@ -299,7 +332,6 @@ function startNewGame() {
 function startNewInning() {
   const { matchStatus, score } = getData();
   endFirstInn.style.display = "none";
-
   matchStatus.inn = "true";
   matchStatus.target = score.score + 1;
   localStorage.setItem("teamAscore", JSON.stringify(score));
