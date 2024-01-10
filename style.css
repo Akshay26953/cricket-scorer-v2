@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
+/* Utils Class */
 
 * {
   margin: 0;
@@ -9,16 +10,15 @@ html {
   font-size: 62.5%;
   font-family: "Play", sans-serif;
 }
-/* body {
-  padding: 1rem;
-} */
 
 header {
   text-align: center;
   padding: 1rem;
   font-size: 2rem;
 }
+
 #dialog {
+  /* display: none; */
   z-index: 100;
   position: fixed;
   top: 0;
@@ -35,32 +35,57 @@ form {
   top: 50%;
   transform: translate(-50%, -50%);
   background: pink;
-  width: fit-content;
+  width: 30rem;
   padding: 2rem;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-form div {
-  display: flex;
+form > div {
+  /* display: grid;
+  grid-template-columns: 2fr 2fr;
   justify-content: space-between;
+  align-items: center; */
+  /* display: flex;
+  justify-content: space-between;
+  gap: 1rem; */
 }
 
-form input {
+/* .chooseOpt {
+  display: flex;
+} */
+.chooseOpt > div {
+  display: flex;
+  gap: 1rem;
+}
+.enterValue {
+  width: 5rem;
   padding: 0.5rem;
   border: 2px solid red;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
 }
-
-.sec1 {
+.targetOpt {
+  display: none;
+}
+.targetOpt > div {
+display: flex;
+justify-content: space-between;
+}
+/* .sec1 {
   flex: 1;
   position: sticky;
   top: 0;
-}
+} */
 .showTarget {
-  /* display: none; */
+  display: none;
+}
+.showTarget > div {
   font-size: 1.6rem;
   padding: 1rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,10 +93,9 @@ form input {
   background: rgb(255, 238, 208);
   border: 2px solid orangered;
   border-radius: 10px;
-  /* border-radius: 30px; */
   text-align: center;
 }
-.showTarget > span {
+.showTarget > div > span {
   font-weight: bold;
   font-size: 2.3rem;
   color: orangered;
@@ -79,24 +103,20 @@ form input {
 .showTeamA {
   display: none;
 }
-.targetOpt {
+/* .targetOpt {
   display: none;
-}
+} */
 
 .score {
   /* min-width: 50%; */
   font-size: 1.6rem;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   padding: 1rem;
   background: white;
   border: 2px solid rgb(158, 158, 158);
   border-radius: 10px;
 }
 
-.score .showTarget {
-  font-size: 1.8rem;
-  font-weight: bold;
-}
 .score .showRuns {
   font-size: 3rem;
   display: flex;
@@ -115,16 +135,14 @@ form input {
   font-weight: bold;
   font-size: 2rem;
 }
-main {
-  /* display: grid;
-  grid-template-columns: 1fr 2fr; */
+.container {
   display: flex;
   width: 900px;
   margin: auto;
   gap: 1rem;
 }
 
-.coBalls {
+#coBalls {
   display: flex;
   gap: 0.5rem;
   font-size: 1.4rem;
@@ -173,7 +191,7 @@ main {
   gap: 1rem;
 }
 .extraRunBtn {
-  /* display: none; */
+  display: none;
 }
 .extraTitle {
   margin: 1rem;

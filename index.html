@@ -12,37 +12,54 @@
       <form>
         <div class="oversOpt">
           <label for="overs">Set Overs : </label>
-          <input type="number" min="1" name="overs" id="overs" value="1" />
+
+          <input
+            class="enterValue"
+            type="number"
+            min="1"
+            name="overs"
+            id="overs"
+            value="1"
+          />
         </div>
         <div class="chooseOpt">
           <label for="inn">Choose : </label>
-          <input
-            type="radio"
-            name="inn"
-            id="inn1"
-            value="false"
-            checked
-            onchange="setTarget()"
-          />
-          <label for="inn1">Full Match</label>
-          <input
-            type="radio"
-            name="inn"
-            id="inn2"
-            value="true"
-            onchange="setTarget()"
-          />
-          <label for="inn2">Only 2nd Inning</label>
+          <div>
+            <div>
+              <input
+                type="radio"
+                name="inn"
+                id="inn1"
+                value="false"
+                checked
+                onchange="setTarget()"
+              />
+              <label for="inn1">Full Match</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="inn"
+                id="inn2"
+                value="true"
+                onchange="setTarget()"
+              />
+              <label for="inn2">Only 2nd Inning</label>
+            </div>
+          </div>
         </div>
         <div class="targetOpt">
-          <label for="overs">Set Target : </label>
-          <input
-            type="number"
-            min="0"
-            name="target"
-            id="target"
-            placeholder="0"
-          />
+          <div>
+            <label for="overs">Set Target : </label>
+            <input
+              class="enterValue"
+              type="number"
+              min="0"
+              name="target"
+              id="target"
+              placeholder="0"
+            />
+          </div>
         </div>
         <button type="button" class="dialogBtn" onclick="subSetup()">
           Submit
@@ -52,32 +69,32 @@
     <header>
       <h1>Cricket Scorer</h1>
     </header>
-    <main>
+    <main class="container">
       <section class="sec1">
-        <p class="showTarget">
-          <span>56</span> runs required from <span>40</span> balls
-        </p>
+        <div class="showTarget">
+          <div>
+            <span class="stRuns">00</span>
+            <p>runs required from</p>
+            <span class="stBalls">00</span>
+            <p>balls</p>
+          </div>
+        </div>
         <div class="score">
           <h1 class="showRuns">
-            <span>Team A :</span> <span>0 / 0 (0.0/0)</span>
+            <span class="srTeam">Team A :</span>
+            <span class="srScore"
+              ><span class="srRuns">0 / 0</span>
+              <span class="srOvers">(0.0/0)</span></span
+            >
           </h1>
-          <!-- <h1 class="showRuns">Team A : 0 / 0 (0.0/0)</h1> -->
           <p class="info">
-            <span class="infocrr">CRR: 4.5</span>
-            <span class="infotar">Target: 45</span>
-            <span class="inforrr">RRR: 4.5</span>
+            <span class="infocrr">CRR: 0.0</span>
+            <span class="infotar">Target: 0</span>
+            <span class="inforrr">RRR: 0.0</span>
           </p>
           <div class="currentOver">
             <span>Current Over: </span>
-            <span class="coBalls">
-              <div class="ball">1</div>
-              <div class="ball">2</div>
-              <div class="ball">4</div>
-              <div class="ball">W</div>
-              <div class="ball">6+nb</div>
-              <div class="ball">5nb</div>
-              <div class="ball">5nb</div>
-            </span>
+            <span id="coBalls"> </span>
           </div>
         </div>
         <section id="runBtns">
@@ -182,90 +199,16 @@
       <section class="sec2">
         <div id="currentInn" class="overSet">
           <h2 class="oversTitle">Current Over</h2>
-          <div class="allOvers">
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-          </div>
+          <div id="currentOvers" class="allOvers"></div>
         </div>
         <!-- <div id="1stInn" class="overSet">
-          <h2 class="oversTitle">1st Inning</h2>
-          <div class="allOvers">
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-            <div class="overs">
-              <p class="overTag">Over 1</p>
-              <div class="over">
-                <span class="ball">1</span><span class="ball">W</span
-                ><span class="ball">nb</span>
-              </div>
-            </div>
-          </div>
         </div> -->
       </section>
     </main>
     <footer>
       <p>Created By <a href="/">Akshay Kharat</a></p>
     </footer>
-    <!-- <script src="main.js"></script> -->
+    <script src="main.js"></script>
     <!-- <script src="inning.js"></script> -->
   </body>
 </html>
