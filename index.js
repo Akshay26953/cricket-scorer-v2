@@ -1,23 +1,30 @@
-const showRuns = document.querySelector(".showRuns");
-const showOvers = document.querySelector(".showOvers");
 const showTarget = document.querySelector(".showTarget");
-const sec2 = document.querySelector(".sec2");
+const srTeam = document.querySelector(".srTeam");
+const srScore = document.querySelector(".srScore");
+const srRuns = document.querySelector(".srRuns");
+const srOvers = document.querySelector(".srOvers");
+const stBalls = document.querySelector(".stBalls");
+const stRuns = document.querySelector(".stRuns");
+const infocrr = document.querySelector(".infocrr");
+const infotar = document.querySelector(".infotar");
+const inforrr = document.querySelector(".inforrr");
+const currentOvers = document.getElementById("currentOvers");
+const coBalls = document.getElementById("coBalls");
+const currentInn = document.getElementById("currentInn");
+const extraRunBtn = document.querySelector(".extraRunBtn");
+const matchResult = document.querySelector(".matchResult");
+const endFirstInn = document.getElementById("endFirstInn");
+const runBtnSet = document.querySelector(".runBtnSet").children;
+
+// const sec2 = document.querySelector(".sec2");
 const form = document.querySelector("form");
 const targetOpt = document.querySelector(".targetOpt");
 const dialog = document.getElementById("dialog");
-let overs = document.getElementById("overs");
-let target = document.getElementById("target");
+// let overs = document.getElementById("overs");
 
 const getData = () => {
   const matchStatus = JSON.parse(localStorage.getItem("matchSetup"));
   const score = JSON.parse(localStorage.getItem("scoreCard"));
-  // if (score !== null) {
-  //   const ballsBowled =
-  //     (score.overs.length - 1) * 6 + score.over.length - score.extras;
-  //   const totalBalls = matchStatus.overs * 6;
-  //   return { matchStatus, score, ballsBowled, totalBalls };
-  // } else {
-  // }
   return {
     matchStatus,
     score,
@@ -25,22 +32,17 @@ const getData = () => {
       score !== null
         ? (score.overs.length - 1) * 6 + score.over.length - score.extras
         : 0,
-    totalBalls: score !== null ? matchStatus.overs * 6 : 0,
+    totalBalls: matchStatus ? matchStatus.overs * 6 : 0,
   };
 };
 
 function checkMatchStatus() {
   const { matchStatus, score, ballsBowled, totalBalls } = getData();
-  // console.log(matchStatus, score, ballsBowled, totalBalls);
   if (matchStatus !== null && score !== null) {
     if (matchStatus.inn === "false") {
       // code for first batting
-      if (ballsBowled >= totalBalls) {
-        matchStatus.inn = "true";
-        matchStatus.target = score.score + 1;
-        localStorage.setItem("teamAscore", JSON.stringify(score));
-        localStorage.removeItem("scoreCard");
-        localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
+      if (ballsBowled == totalBalls) {
+        endFirstInn.style.display = "block";
       }
     } else {
       if (matchStatus.target < score.score) {
@@ -64,6 +66,7 @@ function checkMatchStatus() {
     }
   }
 }
+
 function showDialog() {
   const matchStatus = localStorage.getItem("matchSetup");
   if (matchStatus === null) {
@@ -77,7 +80,6 @@ showDialog();
 
 function setTarget() {
   let inn = document.querySelector('input[name="inn"]:checked').value;
-
   if (inn === "true") {
     targetOpt.style.display = "block";
   } else {
@@ -101,23 +103,35 @@ function subSetup() {
 function showScore() {
   checkMatchStatus();
 
-  const { matchStatus, score } = getData();
+  const { matchStatus, score, ballsBowled, totalBalls } = getData();
+
   if (score === null) {
-    showRuns.innerHTML = "0 / 0";
-    showOvers.innerHTML =
-      "0.0(" + `${matchStatus ? matchStatus.overs : 0}` + ") Overs";
-    sec2.innerHTML = "";
+    if (matchStatus !== null) {
+      srTeam.innerHTML = `${
+        matchStatus.inn === "true" ? "Team B :" : "Team A :"
+      }`;
+      srOvers.innerHTML = "(0.0/" + matchStatus.overs + ")";
+      showTarget.style.display = "block";
+      stRuns.innerHTML = matchStatus.target;
+      stBalls.innerHTML = totalBalls;
+      if (matchStatus.inn === "true") {
+        infotar.style.display = "block";
+        inforrr.style.display = "block";
+        infotar.innerHTML = "Target: " + matchStatus.target;
+        inforrr.innerHTML = "RRR: " + matchStatus.target / matchStatus.overs;
+      }
+    }
   } else {
-    const ballsBowled =
-      (score.overs.length - 1) * 6 + score.over.length - score.extras;
-    const totalBalls = matchStatus.overs * 6;
-    const data = score.overs
+    const crr = score.score / (ballsBowled / 6);
+    const rrr =
+      (matchStatus.target - score.score) / ((totalBalls - ballsBowled) / 6);
+    const showAllOvers = score.overs
       .map((e, index) => {
         return `<div class="overs"><div class="overTag">Over ${
           index + 1
         }</div> <div class="over">${e
           .map((e) => {
-            if (e[0] == "W" || e[2] == "W") {
+            if (e[0] == "W" || e[1] == "W") {
               return `<span class="ball wkt">${e}</span>`;
             } else if (e == 6 || e[0] == "6") {
               return `<span class="ball six">${e}</span>`;
@@ -130,40 +144,54 @@ function showScore() {
           .join(" ")}</div></div>`;
       })
       .join(" ");
-    showRuns.innerHTML =
-      score.score +
-      " / " +
-      score.wickets +
-      `${
-        matchStatus.inn === "true"
-          ? "( Target: " + matchStatus.target + " )"
-          : ""
-      }`;
-
-    if (score.over.length - score.extras < 6) {
-      showOvers.innerHTML =
-        score.overs.length -
-        1 +
-        "." +
-        (score.over.length - score.extras) +
-        "(" +
-        matchStatus.overs +
-        ") Overs";
-    } else {
-      showOvers.innerHTML = score.overs.length + "." + "0 Overs";
-    }
+    currentOvers.innerHTML = showAllOvers;
+    infocrr.innerHTML = "CRR: " + crr.toFixed(2);
 
     if (matchStatus.inn === "true") {
       showTarget.style.display = "block";
-      showTarget.innerHTML =
-        matchStatus.target -
-        score.score +
-        " runs required from " +
-        (totalBalls - ballsBowled) +
-        " balls";
+      stRuns.innerHTML = matchStatus.target - score.score;
+      stBalls.innerHTML = totalBalls - ballsBowled;
+      infotar.style.display = "block";
+      inforrr.style.display = "block";
+      infotar.innerHTML = "Target: " + matchStatus.target;
+      inforrr.innerHTML = "RRR: " + rrr.toFixed(2);
     }
 
-    sec2.innerHTML = data;
+    srTeam.innerHTML = `${
+      matchStatus.inn === "true" ? "Team B : " : "Team A : "
+    }`;
+
+    srRuns.innerHTML = score.score + " / " + score.wickets;
+
+    if (score.over.length - score.extras < 6) {
+      srOvers.innerHTML =
+        "(" +
+        (score.overs.length - 1) +
+        "." +
+        (score.over.length - score.extras) +
+        "/" +
+        matchStatus.overs +
+        ")";
+    } else {
+      srOvers.innerHTML =
+        "(" + score.overs.length + ".0" + "/" + matchStatus.overs + ")";
+    }
+
+    const showCurrentOver = score.over
+      .map((e) => {
+        if (e[0] == "W" || e[1] == "W") {
+          return `<span class="ball wkt">${e}</span>`;
+        } else if (e == 6 || e[0] == "6") {
+          return `<span class="ball six">${e}</span>`;
+        } else if (e == 4 || e[0] == "4") {
+          return `<span class="ball four">${e}</span>`;
+        } else {
+          return `<span class="ball">${e}</span>`;
+        }
+      })
+      .join(" ");
+
+    coBalls.innerHTML = showCurrentOver;
   }
 }
 showScore();
@@ -204,11 +232,17 @@ function updateOvers(run, score) {
 function updateScore(run, score) {
   if (typeof run === "number") {
     score.score += run;
-  } else if (run === "W") {
-    score.wickets += 1;
   } else {
-    score.extras += 1;
-    score.score += 1;
+    if (run === "W") {
+      score.wickets += 1;
+    } else {
+      score.extras += 1;
+      score.score += 1;
+    }
+    for (let x of runBtnSet) {
+      x.disabled = true;
+    }
+    extraRunBtn.style.display = "block";
   }
   localStorage.setItem("scoreCard", JSON.stringify(score));
   showScore();
@@ -218,10 +252,13 @@ function addExtraRun(extraRun) {
   const score = JSON.parse(localStorage.getItem("scoreCard"));
   if (extraRun === 0) {
     run = score.over.pop();
-    console.log(run);
   } else {
-    run = extraRun + "+" + score.over.pop();
+    run = extraRun + score.over.pop();
   }
+  for (let x of runBtnSet) {
+    x.disabled = false;
+  }
+  extraRunBtn.style.display = "none";
   score.over.push(run);
   score.overs.pop();
   score.overs.push(score.over);
@@ -239,14 +276,14 @@ function resetLast() {
       if (typeof lastScore === "number") {
         score.score -= lastScore;
       } else {
-        if (lastScore[0] === "W" || lastScore[2] === "W") {
+        if (lastScore[0] === "W" || lastScore[1] === "W") {
           score.wickets -= 1;
-          if (lastScore[2] === "W") {
+          if (lastScore[1] === "W") {
             score.score -= Number(lastScore[0]);
           }
         } else {
           score.extras -= 1;
-          if (lastScore[2] === "w" || lastScore[2] === "n") {
+          if (lastScore[1] === "w" || lastScore[1] === "n") {
             score.score -= Number(lastScore[0]) + 1;
           }
         }
@@ -265,4 +302,39 @@ function resetAll() {
     localStorage.clear();
   }
   showScore();
+}
+
+function endInning() {
+  const {matchStatus, score, ballsBowled, totalBalls} = getData();
+  if (ballsBowled < totalBalls) {
+    const endInn = confirm(
+      "Do you want to declare inning before completing all overs?"
+    );
+    if (endInn) {
+      matchStatus.inn = "true";
+      matchStatus.target = score.score + 1;
+      localStorage.setItem("teamAscore", JSON.stringify(score));
+      localStorage.removeItem("scoreCard");
+      localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
+      endFirstInn.style.display = "block";
+    }
+  }
+}
+
+function startNewGame() {
+  matchResult.style.display = "none";
+  if (reset) {
+    localStorage.clear();
+  }
+  showScore();
+}
+
+function startNewInning() {
+  const { matchStatus, score } = getData();
+  endFirstInn.style.display = "none";
+  matchStatus.inn = "true";
+  matchStatus.target = score.score + 1;
+  localStorage.setItem("teamAscore", JSON.stringify(score));
+  localStorage.removeItem("scoreCard");
+  localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
 }
