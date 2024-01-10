@@ -6,10 +6,13 @@ const srOvers = document.querySelector(".srOvers");
 const stBalls = document.querySelector(".stBalls");
 const stRuns = document.querySelector(".stRuns");
 const infotar = document.querySelector(".infotar");
+const inforrr = document.querySelector(".inforrr");
 const currentOvers = document.getElementById("currentOvers");
 const coBalls = document.getElementById("coBalls");
 const currentInn = document.getElementById("currentInn");
 const extraRunBtn = document.querySelector(".extraRunBtn");
+const matchResult = document.querySelector(".matchResult");
+const endFirstInn = document.getElementById("endFirstInn");
 const runBtnSet = document.querySelector(".runBtnSet").children;
 
 // const sec2 = document.querySelector(".sec2");
@@ -37,12 +40,8 @@ function checkMatchStatus() {
   if (matchStatus !== null && score !== null) {
     if (matchStatus.inn === "false") {
       // code for first batting
-      if (ballsBowled > totalBalls) {
-        matchStatus.inn = "true";
-        matchStatus.target = score.score + 1;
-        localStorage.setItem("teamAscore", JSON.stringify(score));
-        localStorage.removeItem("scoreCard");
-        localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
+      if (ballsBowled == totalBalls) {
+        endFirstInn.style.display = "block";
       }
     } else {
       if (matchStatus.target < score.score) {
@@ -118,7 +117,7 @@ function showScore() {
           index + 1
         }</div> <div class="over">${e
           .map((e) => {
-            if (e[0] == "W" || e[2] == "W") {
+            if (e[0] == "W" || e[1] == "W") {
               return `<span class="ball wkt">${e}</span>`;
             } else if (e == 6 || e[0] == "6") {
               return `<span class="ball six">${e}</span>`;
@@ -137,7 +136,9 @@ function showScore() {
       showTarget.style.display = "block";
       stRuns.innerHTML = matchStatus.target - score.score;
       stBalls.innerHTML = totalBalls - ballsBowled;
-      infotar.innerHTML = "Target: " + matchStatus.target;      
+      infotar.style.display = "block";
+      inforrr.style.display = "block";
+      infotar.innerHTML = "Target: " + matchStatus.target;
     }
 
     srTeam.innerHTML = `${
@@ -162,7 +163,7 @@ function showScore() {
 
     const showCurrentOver = score.over
       .map((e) => {
-        if (e[0] == "W" || e[2] == "W") {
+        if (e[0] == "W" || e[1] == "W") {
           return `<span class="ball wkt">${e}</span>`;
         } else if (e == 6 || e[0] == "6") {
           return `<span class="ball six">${e}</span>`;
@@ -236,7 +237,7 @@ function addExtraRun(extraRun) {
   if (extraRun === 0) {
     run = score.over.pop();
   } else {
-    run = extraRun + "+" + score.over.pop();
+    run = extraRun + score.over.pop();
   }
   for (let x of runBtnSet) {
     x.disabled = false;
@@ -259,14 +260,14 @@ function resetLast() {
       if (typeof lastScore === "number") {
         score.score -= lastScore;
       } else {
-        if (lastScore[0] === "W" || lastScore[2] === "W") {
+        if (lastScore[0] === "W" || lastScore[1] === "W") {
           score.wickets -= 1;
-          if (lastScore[2] === "W") {
+          if (lastScore[1] === "W") {
             score.score -= Number(lastScore[0]);
           }
         } else {
           score.extras -= 1;
-          if (lastScore[2] === "w" || lastScore[2] === "n") {
+          if (lastScore[1] === "w" || lastScore[1] === "n") {
             score.score -= Number(lastScore[0]) + 1;
           }
         }
@@ -285,4 +286,23 @@ function resetAll() {
     localStorage.clear();
   }
   showScore();
+}
+
+function startNewGame() {
+  matchResult.style.display = "none";
+  if (reset) {
+    localStorage.clear();
+  }
+  showScore();
+}
+
+function startNewInning() {
+  const { matchStatus, score } = getData();
+  endFirstInn.style.display = "none";
+
+  matchStatus.inn = "true";
+  matchStatus.target = score.score + 1;
+  localStorage.setItem("teamAscore", JSON.stringify(score));
+  localStorage.removeItem("scoreCard");
+  localStorage.setItem("matchSetup", JSON.stringify(matchStatus));
 }
