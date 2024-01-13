@@ -36,6 +36,12 @@ const getData = () => {
   };
 };
 
+function disableBtns(input) {
+  for (let x of runBtnSet) {
+    x.disabled = input;
+  }
+}
+
 function checkMatchStatus() {
   const { matchStatus, score, ballsBowled, totalBalls } = getData();
   if (matchStatus !== null && score !== null) {
@@ -47,21 +53,25 @@ function checkMatchStatus() {
     } else {
       if (matchStatus.target < score.score) {
         console.log("Team B won");
+        disableBtns("true");
       } else if (
         matchStatus.target < score.score &&
         totalBalls === ballsBowled
       ) {
         console.log("Team B won");
+        disableBtns("true");
       } else if (
         matchStatus.target - 1 > score.score &&
         totalBalls === ballsBowled
       ) {
         console.log("Team A Won");
+        disableBtns("true");
       } else if (
         matchStatus.target - 1 === score.score &&
         totalBalls === ballsBowled
       ) {
         console.log("Match Tied");
+        disableBtns("true");
       }
     }
   }
@@ -111,7 +121,6 @@ function showScore() {
         matchStatus.inn === "true" ? "Team B :" : "Team A :"
       }`;
       srOvers.innerHTML = "(0.0/" + matchStatus.overs + ")";
-      showTarget.style.display = "block";
       stRuns.innerHTML = matchStatus.target;
       stBalls.innerHTML = totalBalls;
       if (matchStatus.inn === "true") {
@@ -288,12 +297,14 @@ function resetLast() {
           }
         }
       }
+
       score.overs.pop();
       score.overs.push(score.over);
       localStorage.setItem("scoreCard", JSON.stringify(score));
     }
     showScore();
   }
+  // disableBtns("false");
 }
 
 function resetAll() {
@@ -305,7 +316,7 @@ function resetAll() {
 }
 
 function endInning() {
-  const {matchStatus, score, ballsBowled, totalBalls} = getData();
+  const { matchStatus, score, ballsBowled, totalBalls } = getData();
   if (ballsBowled < totalBalls) {
     const endInn = confirm(
       "Do you want to declare inning before completing all overs?"
